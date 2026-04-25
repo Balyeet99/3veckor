@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from src.controllers.usercontroller import UserController
 
 
@@ -54,3 +54,19 @@ def test_database_error(user_controller):
 
     with pytest.raises(Exception):
         user_controller.get_user_by_email("user@test.com")
+
+def test_update_returns_result(user_controller):
+    data = {"name": "Alex"}
+    expected = {"modified_count": 1}
+
+    with patch("src.controllers.controller.Controller.update", return_value=expected) as mock_update:
+        result = user_controller.update("123", data)
+
+    assert result == expected
+    mock_update.assert_called_once_with(id="123", data={"$set": data})
+
+
+def test_update_raises_exception(user_controller):
+    with patch("src.controllers.controller.Controller.update", side_effect=Exception("update error")):
+        with pytest.raises(Exception, match="update error"):
+            user_controller.update("123", {"name": "Alex"})
