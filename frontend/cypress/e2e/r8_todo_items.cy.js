@@ -3,6 +3,9 @@ describe('R8 - Todo items', () => {
   let uid // user id
   let name // name of the user (firstName + ' ' + lastName)
   let email // email of the user
+  let taskTitle
+  let taskUrl
+  let todoItem
 
   before(function () {
     // create a fabricated user from a fixture
@@ -18,6 +21,14 @@ describe('R8 - Todo items', () => {
           name = user.firstName + ' ' + user.lastName
           email = user.email
         })
+      })
+
+    // read task data from fixture
+    cy.fixture('task.json')
+      .then((task) => {
+        taskTitle = task.title
+        taskUrl = task.url
+        todoItem = task.todos
       })
   })
 
@@ -39,10 +50,10 @@ describe('R8 - Todo items', () => {
   // create a task
   function createTask() {
     cy.get('input[placeholder="Title of your Task"]')
-      .type('Test Task')
+      .type('taskTitle')
 
     cy.get('input[placeholder*="Viewkey"]')
-      .type('dQw4w9WgXcQ')
+      .type('taskUrl')
 
     cy.get('input[type="submit"][value="Create new Task"]')
       .click()
@@ -62,29 +73,29 @@ describe('R8 - Todo items', () => {
 
     // R8UC1: create a todo item
     cy.get('input[placeholder="Add a new todo item"]')
-      .type('Rickroll')
+      .type(todoItem)
 
     cy.get('input[type="submit"][value="Add"]')
       .click()
 
-    cy.contains('li.todo-item', 'Rickroll')
+    cy.contains('li.todo-item', todoItem)
       .should('be.visible')
 
     // R8UC2: toggle the todo item
-    cy.contains('li.todo-item', 'Rickroll')
+    cy.contains('li.todo-item', todoItem)
       .find('span.checker.unchecked')
       .click()
 
-    cy.contains('li.todo-item', 'Rickroll')
+    cy.contains('li.todo-item', todoItem)
       .find('span.checker.checked')
       .should('be.visible')
 
     // R8UC3: delete the todo item
-    cy.contains('li.todo-item', 'Rickroll')
+    cy.contains('li.todo-item', todoItem)
       .find('span.remover')
       .click()
 
-    cy.contains('li.todo-item', 'Rickroll')
+    cy.contains('li.todo-item', todoItem)
       .should('not.exist')
   })
 
