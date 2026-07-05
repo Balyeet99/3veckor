@@ -9,6 +9,10 @@ jobs:
     name: Run Backend Unit Tests
     runs-on: ubuntu-latest
 
+    default:
+      run:
+        woking-directory: backend
+
     steps:
       - name: Checkout GitHub code
         uses: actions/checkout@v4
@@ -20,8 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install pytest pytest-cov pymongo python-dotenv
+          pip install -r requirements.pip
 
       - name: Run backend unit tests
         working-directory: backend
