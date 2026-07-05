@@ -11,7 +11,7 @@ jobs:
 
     defaults:
       run:
-        woking-directory: backend
+        working-directory: backend
 
     steps:
       - name: Checkout GitHub code
