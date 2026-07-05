@@ -9,7 +9,7 @@ jobs:
     name: Run Backend Unit Tests
     runs-on: ubuntu-latest
 
-    default:
+    defaults:
       run:
         woking-directory: backend
 
@@ -27,6 +27,5 @@ jobs:
           pip install -r requirements.pip
 
       - name: Run backend unit tests
-        working-directory: backend
         run: |
           python -m pytest test/demo/test_get_user_by_email.py -v
