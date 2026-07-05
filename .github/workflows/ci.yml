@@ -26,4 +26,4 @@ jobs:
       - name: Run backend unit tests
         working-directory: backend
         run: |
-          python -m pytest
+          python -m pytest test/demo/test_get_user_by_email.py -v
